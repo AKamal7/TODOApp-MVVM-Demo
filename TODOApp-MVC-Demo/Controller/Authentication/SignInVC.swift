@@ -54,6 +54,8 @@ extension SignInVC {
             } else if let loginData = loginData {
                 print(loginData.token)
                 UserDefaultsManager.shared().token = loginData.token
+                UserDefaultsManager.shared().id = loginData.user.id
+
                 self.goToMainVC()
             }
             self.view.hideLoader()

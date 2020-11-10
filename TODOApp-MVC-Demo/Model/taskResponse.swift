@@ -14,6 +14,14 @@ struct TaskResponse: Codable {
 
 struct TaskData: Codable {
     
+    let id: String
     let description: String
+    
+    enum CodingKeys: String, CodingKey {
+        case description
+        case id = "_id"
+    }
 }
+
+
 

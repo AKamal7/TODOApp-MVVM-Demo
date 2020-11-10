@@ -8,14 +8,14 @@
 
 import UIKit
 
-protocol sendingDescriptionDelegate {
+protocol refreshToDoListDelegate {
     func refreshData()
 }
 
 class PopupVCViewController: UIViewController {
     
     //MARK:- Properties
-    var delegate: sendingDescriptionDelegate?
+     var delegate: refreshToDoListDelegate?
     
     //MARK:- IBOutlets
     @IBOutlet weak var descriptionTextField: UITextField!

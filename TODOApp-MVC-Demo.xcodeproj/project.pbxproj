@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		767FA02330D1EAF4DF5F4A2D /* Pods_TODOApp_MVC_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91F675E6B4DF70681B4B8BD5 /* Pods_TODOApp_MVC_Demo.framework */; };
 		8A07689525531AE90067395D /* UIView+loader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A07689425531AE90067395D /* UIView+loader.swift */; };
+		8A18607625587C66004A50B1 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A18607525587C66004A50B1 /* ProfileVC.swift */; };
 		8A1E49DF2552F3F800688EE1 /* String+Trimming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1E49DE2552F3F800688EE1 /* String+Trimming.swift */; };
 		8A3797F2255498D500458086 /* PopupVCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3797F1255498D500458086 /* PopupVCViewController.swift */; };
 		8A3DFD5A25545E0600426824 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3DFD5825545E0600426824 /* TaskCell.swift */; };
@@ -35,6 +36,7 @@
 /* Begin PBXFileReference section */
 		658DB19265AC46253A8B6597 /* Pods-TODOApp-MVC-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TODOApp-MVC-Demo.debug.xcconfig"; path = "Target Support Files/Pods-TODOApp-MVC-Demo/Pods-TODOApp-MVC-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		8A07689425531AE90067395D /* UIView+loader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+loader.swift"; sourceTree = "<group>"; };
+		8A18607525587C66004A50B1 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		8A1E49DE2552F3F800688EE1 /* String+Trimming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimming.swift"; sourceTree = "<group>"; };
 		8A3797F1255498D500458086 /* PopupVCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupVCViewController.swift; sourceTree = "<group>"; };
 		8A3DFD5825545E0600426824 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			children = (
 				B76E56B82548A76600C13D43 /* SignInVC.swift */,
 				B76E56BB2548A84600C13D43 /* SignUpVC.swift */,
+				8A18607525587C66004A50B1 /* ProfileVC.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				B76E56B52548A63E00C13D43 /* UIViewController+Storyboard.swift in Sources */,
 				B76E56C12548B0FD00C13D43 /* LoginResponse.swift in Sources */,
 				8A1E49DF2552F3F800688EE1 /* String+Trimming.swift in Sources */,
+				8A18607625587C66004A50B1 /* ProfileVC.swift in Sources */,
 				B76E56C32548B2B100C13D43 /* Constants.swift in Sources */,
 				8A4758CA2550C29E002081BD /* User.swift in Sources */,
 				8A86F1B12553593000063BB2 /* UIViewController+Alert.swift in Sources */,

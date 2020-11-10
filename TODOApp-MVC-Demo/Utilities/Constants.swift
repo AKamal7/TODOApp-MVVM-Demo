@@ -21,14 +21,19 @@ struct ViewControllers {
     static let signInVC = "SignInVC"
     static let todoListVC = "TodoListVC"
     static let popupVC = "PopupVCViewController"
+    static let profileVC = "ProfileVC"
 }
 
 // Urls
 struct URLs {
     static let base = "https://api-nodejs-todolist.herokuapp.com"
-    static let login = base + "/user/login"
-    static let register = base + "/user/register"
+    static let user = base + "/user"
+    static let login = user + "/login"
+    static let register = user + "/register"
     static let task = base + "/task"
+    static let userData = user + "/me"
+    static let userLogOut = user + "/logout"
+    static let uploadImage = userData + "/avatar"
     
 }
 
@@ -50,6 +55,7 @@ struct ParameterKeys {
 // UserDefaultsKeys
 struct UserDefaultsKeys {
     static let token = "UDKToken"
+    static let id = "id"
 }
 
 // Cells

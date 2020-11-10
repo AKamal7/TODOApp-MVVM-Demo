@@ -17,18 +17,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="McU-tU-WN3">
-                        <rect key="frame" x="39.5" y="30" width="316" height="59.5"/>
+                        <rect key="frame" x="10" y="30" width="316" height="59.5"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="32"/>
                         <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLZ-RX-7VB">
+                        <rect key="frame" x="331" y="48.5" width="59" height="22"/>
+                        <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <state key="normal" title="Button" image="trash" catalog="system"/>
+                        <connections>
+                            <action selector="deleteButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="sYl-CZ-Mr2"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="McU-tU-WN3" firstAttribute="height" secondItem="H2p-sc-9uM" secondAttribute="height" multiplier="0.5" id="G2V-NS-17a"/>
+                    <constraint firstAttribute="trailing" secondItem="LLZ-RX-7VB" secondAttribute="trailing" constant="5" id="L3T-JS-NZW"/>
+                    <constraint firstItem="LLZ-RX-7VB" firstAttribute="centerY" secondItem="McU-tU-WN3" secondAttribute="centerY" id="Qa3-YD-IGw"/>
                     <constraint firstItem="McU-tU-WN3" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SDs-1i-hmw"/>
+                    <constraint firstItem="LLZ-RX-7VB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="McU-tU-WN3" secondAttribute="trailing" constant="5" id="as8-O9-E1e"/>
                     <constraint firstItem="McU-tU-WN3" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.8" id="j9v-pg-Sej"/>
-                    <constraint firstItem="McU-tU-WN3" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="nXo-lk-NFi"/>
+                    <constraint firstItem="LLZ-RX-7VB" firstAttribute="height" secondItem="McU-tU-WN3" secondAttribute="height" multiplier="0.369748" id="vjI-xN-TSu"/>
+                    <constraint firstItem="McU-tU-WN3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="yVT-bS-73J"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -38,4 +50,7 @@
             <point key="canvasLocation" x="186.23188405797103" y="74.665178571428569"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="trash" catalog="system" width="121" height="128"/>
+    </resources>
 </document>

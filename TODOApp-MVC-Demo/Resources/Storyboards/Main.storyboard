@@ -95,11 +95,18 @@
                         <viewLayoutGuide key="safeArea" id="ze1-gk-Kar"/>
                     </view>
                     <navigationItem key="navigationItem" title="ToDoList" id="721-34-vre">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="1rM-nt-I9Z">
-                            <connections>
-                                <action selector="addButtonPressed:" destination="xko-eu-rsM" id="2X8-rt-Umw"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="1rM-nt-I9Z">
+                                <connections>
+                                    <action selector="addButtonPressed:" destination="xko-eu-rsM" id="2X8-rt-Umw"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Profile" image="person.crop.circle" catalog="system" id="sC8-vB-8ud">
+                                <connections>
+                                    <action selector="profileButtonPressed:" destination="xko-eu-rsM" id="3HM-kI-lt5"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="IuH-Xa-zuh" id="c67-gw-hfG"/>
@@ -112,5 +119,6 @@
     </scenes>
     <resources>
         <image name="delete.right.fill" catalog="system" width="128" height="104"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="121"/>
     </resources>
 </document>

@@ -8,8 +8,14 @@
 
 import UIKit
 
-class TaskCell: UITableViewCell {
+protocol deleteTaskDelegate: AnyObject {
+    func deleteTask(cell: UITableViewCell)
+}
 
+class TaskCell: UITableViewCell {
+    
+    weak var delegate: deleteTaskDelegate?
+    
     //MARK:- IBOutlets
     @IBOutlet weak var taskDescriptionLabel: UILabel!
     
@@ -17,7 +23,11 @@ class TaskCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
+    @IBAction func deleteButtonPressed(_ sender: UIButton) {
+        delegate?.deleteTask(cell: self)
+    }
+    
     func configureCell(task: String) {
         taskDescriptionLabel.text = task
     }
