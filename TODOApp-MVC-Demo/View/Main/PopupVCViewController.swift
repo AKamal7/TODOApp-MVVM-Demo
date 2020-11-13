@@ -30,8 +30,8 @@ class PopupVCViewController: UIViewController {
         guard let descriptionText = descriptionTextField.text else {
             return
         }
-        
-        addTask(with: descriptionText)
+        let task = Task(description: descriptionText)
+        addTask(with: task)
         
     }
     
@@ -53,9 +53,9 @@ class PopupVCViewController: UIViewController {
     }
     
     //MARK: Private Methods
-    private func addTask(with description: String) {
+    private func addTask(with task: Task) {
         self.view.showLoader()
-        APIManager.addTask(description: description) { (succeed) in
+        APIManager.addTask(with: task) { (succeed) in
             if succeed {
                 print("success")
                 // save the presenting ViewController

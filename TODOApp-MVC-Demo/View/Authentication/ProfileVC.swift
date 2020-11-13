@@ -43,26 +43,28 @@ class ProfileVC: UITableViewController {
     //MARK:- Private Methods
     private func getUserData() {
         self.view.showLoader()
-        APIManager.getUserData { (error, userData) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else if let userData = userData {
+        APIManager.getUserData { (result) in
+            switch result {
+                
+            case .success(let userData):
                 self.getImage(id: userData.id)
                 self.nameLabel.text = userData.name
                 self.emailLabel.text = userData.email
                 self.ageLabel.text = String(userData.age)
                 self.getInitials(name: userData.name)
-                self.updateUserProfile(email: userData.email, name: userData.name, age: userData.age)
+            case .failure(let error):
+                print(error.localizedDescription)
+                
             }
             self.view.hideLoader()
         }
     }
-   
-    private func updateUserProfile(email: String, name: String, age: Int) {
+    
+    private func updateUserProfile(with user: User) {
         self.view.showLoader()
-        APIManager.updateUserData(with: email, name: name, age: age) { (success) in
+        APIManager.updateUserData(with: user) { (success) in
             if success {
-
+                self.getUserData()
                 print("Updated")
             } else {
                 print("failed to update")
@@ -103,23 +105,32 @@ class ProfileVC: UITableViewController {
     }
     
     
-   private func editProfileAlert() {
+    private func editProfileAlert() {
         let alert = UIAlertController(title: "Edit Your Profile", message: nil, preferredStyle: .alert)
         alert.addTextField()
         alert.addTextField()
         alert.addTextField()
-    alert.textFields![0].placeholder = "Email"
-    alert.textFields![0].keyboardType = UIKeyboardType.emailAddress
-    alert.textFields![1].placeholder = "Name"
-    alert.textFields![2].placeholder = "Age"
-    alert.textFields![2].keyboardType = UIKeyboardType.numberPad
-
+        alert.textFields![0].placeholder = "Email"
+        alert.textFields![0].text = self.emailLabel.text
+        alert.textFields![0].keyboardType = UIKeyboardType.emailAddress
+        alert.textFields![1].placeholder = "Name"
+        alert.textFields![1].text = self.nameLabel.text
+        alert.textFields![2].placeholder = "Age"
+        alert.textFields![2].keyboardType = UIKeyboardType.numberPad
+        alert.textFields![2].text = self.ageLabel.text
+        
+        
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned alert] _ in
-            let name = alert.textFields![0]
-
-
+            guard let email = alert.textFields![0].text,
+                let name = alert.textFields![1].text,
+                let ageString = alert.textFields![2].text,
+                let age = Int(ageString) else { return }
+            let user = User(email: email, age: age, name: name)
+            self.updateUserProfile(with: user)
+            
+            
         }
-
+        
         alert.addAction(submitAction)
         present(alert, animated: true)
     }
@@ -145,12 +156,15 @@ class ProfileVC: UITableViewController {
     
     private func getImage(id: String) {
         self.view.showLoader()
-        APIManager.getImage(userId: id) { (error, data) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else if let data = data {
+        APIManager.getImage(userID: id) { (response) in
+            switch response {
+                
+            case .success(let data):
                 self.profileLabel.isHidden = true
                 self.profilePicImageView.image = UIImage(data: data)
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.profileLabel.isHidden = false
             }
             
             if self.profilePicImageView.image == nil {
@@ -173,7 +187,7 @@ class ProfileVC: UITableViewController {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-     
+    
 }
 
 extension ProfileVC: UINavigationControllerDelegate, UIImagePickerControllerDelegate {

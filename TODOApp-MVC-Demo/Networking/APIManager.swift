@@ -6,155 +6,52 @@ import Alamofire
 class APIManager {
     
     // Login to API
-    class func login(with email: String, password: String, completion: @escaping (_ error: Error?, _ loginData: LoginResponse?) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json"]
-        let params: [String: Any] = [ParameterKeys.email: email,
-                                     ParameterKeys.password: password]
-        
-        AF.request(URLs.login, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didn't get any data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let loginData = try decoder.decode(LoginResponse.self, from: data)
-                completion(nil, loginData)
-            } catch let error {
-                completion(error,nil)
-                print(error)
-            }
+    class func  login(with user: User, completion: @escaping (Result<LoginResponse, Error>)-> ()){
+        request(APIRouter.login(user)){ (response) in
+            completion(response)
         }
     }
     
     // Register API
-    class func register(with user: User, completion: @escaping (_ error: Error?, _ userData: LoginResponse?) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.contentType: "application/json"]
-        let params: [String: Any] = [ParameterKeys.age: user.age,
-                                     ParameterKeys.email: user.email,
-                                     ParameterKeys.name: user.name,
-                                     ParameterKeys.password: user.password]
-        
-        AF.request(URLs.register, method: HTTPMethod.post, parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                print(response.error!)
-                completion(response.error, nil)
-                return
-            }
-            
-            guard let data = response.data else {
-                print("didnt get data from API")
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let registerData = try decoder.decode(LoginResponse.self, from: data)
-                completion(nil, registerData)
-            } catch let error {
-                completion(error, nil)
-                print(error)
-            }
+    class func register(with user: User, completion: @escaping (Result<LoginResponse, Error>) -> Void ) {
+        request(APIRouter.register(user)) { (response) in
+            completion(response)
         }
     }
+
     
     //get Task
-    class func getTask(completion: @escaping (_ error: Error?, _ taskData: [TaskData]?) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)",
-            HeaderKeys.contentType: "application/json"]
-        AF.request(URLs.task, method: .get ,encoding: JSONEncoding.default, headers: headers).response {
-            respnose in
-            guard respnose.error == nil else {
-                print(respnose.error!)
-                completion(respnose.error, nil)
-                return
-            }
-            guard let data = respnose.data else {
-                print("there is no data")
-                return
-            }
-            do {
-                let decoder = JSONDecoder()
-                let taskData = try decoder.decode(TaskResponse.self, from: data).data
-                completion(nil, taskData)
-            } catch let error {
-                completion(error, nil)
-                print(error)
-            }
+    class func getTask(completion: @escaping (Result<TaskResponse, Error>) -> Void) {
+        request(APIRouter.getTodos) { (response) in
+            completion(response)
         }
     }
     
     //add task
-    class func addTask(description: String, completion: @escaping (Bool) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)",
-            HeaderKeys.contentType: "application/json"]
-        let params: [String: Any] = [ParameterKeys.description: description]
-        AF.request(URLs.task, method: .post, parameters: params ,encoding: JSONEncoding.default, headers: headers).response { response in
-            guard response.error == nil else {
-                completion(false)
-                return
-            }
-            completion(true)
+    class func addTask(with task: Task, completion: @escaping (Bool) -> Void) {
+        requestBool(APIRouter.addTask(task)) { (response) in
+            completion(response)
         }
     }
     
     //delete task
     class func deleteTask(by id: String, completion: @escaping (Bool) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)",
-            HeaderKeys.contentType: "application/json"]
-        AF.request(URLs.task + "/\(id)", method: .delete, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                completion(false)
-                return
-            }
-            completion(true)
+        requestBool(APIRouter.deleteTask(id)) { (response) in
+            completion(response)
         }
     }
     
     //get user data
-    class func getUserData(completion: @escaping (_ error: Error?, _ userData: UserData?) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)"]
-        AF.request(URLs.userData, method: .get, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                completion(response.error, nil)
-                return
-            }
-            guard let data = response.data else {
-                print("there is no data")
-                return
-            }
-            do {
-                let decoder = JSONDecoder()
-                let userData = try decoder.decode(UserData.self, from: data)
-                completion(nil, userData)
-            } catch let error {
-                completion(error, nil)
-                print(error)
-            }
+    class func getUserData(completion: @escaping (Result<UserData, Error>) -> Void) {
+        request(APIRouter.getUserData) { (response) in
+            completion(response)
         }
     }
     
     // log out
     class func logOut(completion: @escaping (Bool) -> Void) {
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)"]
-        AF.request(URLs.userLogOut, method: .post, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                completion(false)
-                return
-            }
-            completion(true)
+        requestBool(APIRouter.logOut) { (response) in
+            completion(response)
         }
     }
     
@@ -167,7 +64,7 @@ class APIManager {
         
         AF.upload(multipartFormData: { (formData) in
             formData.append(jpegImage, withName: "avatar", fileName: "/home/ali/Mine/c/nodejs-blog/public/img/blog-header.jpg", mimeType: "blog-header.jpg")
-        }, to: URLs.uploadImage, method: HTTPMethod.post, headers: headers).response {
+        }, to: URLs.base + URLs.uploadImage, method: HTTPMethod.post, headers: headers).response {
             respnose in
             guard respnose.error == nil else {
                 print(respnose.error!.localizedDescription)
@@ -180,38 +77,61 @@ class APIManager {
     }
     
     // Get Profile Image
-    class func getImage(userId: String, completion: @escaping (Error?, Data?) -> Void) {
-        AF.request(URLs.user + "/\(userId)" + "/avatar", method: HTTPMethod.get).response { respone in
-            guard respone.error == nil else {
-                print(respone.error!)
-                completion(respone.error, nil)
-                return
-            }
-            guard let data = respone.data else {
-                print("there is no data")
-                return
-            }
-            completion(nil, data)
+    class func getImage(userID: String, completion: @escaping (Result<Data, Error>) -> Void) {
+        requestData(APIRouter.getImage(userID)) { (response) in
+            completion(response)
         }
     }
     
     // Update User Data
-    class func updateUserData(with email: String, name: String, age: Int, completion: @escaping (Bool) -> Void) {
-        let params: [String: Any] = [ParameterKeys.email: email,
-                                     ParameterKeys.name: name,
-                                     ParameterKeys.age: age]
-        let headers: HTTPHeaders = [HeaderKeys.authorization: "Bearer \(UserDefaultsManager.shared().token!)",
-            HeaderKeys.contentType: "application/json"]
-        
-        AF.request(URLs.userData, method: HTTPMethod.put,parameters: params, encoding: JSONEncoding.default, headers: headers).response {
-            response in
-            guard response.error == nil else {
-                completion(false)
-                return
+    class func updateUserData(with user: User, completion: @escaping (Bool) -> Void) {
+        requestBool(APIRouter.updateUserData(user)) { (response) in
+            completion(response)
+        }
+    }
+}
+
+extension APIManager{
+    // MARK:- The request function to get results in a closure
+    private static func request<T: Decodable>(_ urlConvertible: URLRequestConvertible, completion:  @escaping (Result<T, Error>) -> ()) {
+        // Trigger the HttpRequest using AlamoFire
+        AF.request(urlConvertible).responseDecodable { (response: AFDataResponse<T>) in
+            switch response.result {
+            case .success(let value):
+                completion(.success(value))
+            case .failure(let error):
+                completion(.failure(error))
             }
-             completion(true)
+        }
+        .responseJSON { response in
+            print(response)
         }
     }
     
+    private static func requestData(_ urlConvertible: URLRequestConvertible, completion:  @escaping (Result<Data, Error>) -> Void) {
+        AF.request(urlConvertible).response { (response) in
+            switch response.result {
+
+            case .success(let data):
+                guard let data = data else {return}
+                completion(.success(data))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private static func requestBool(_ urlConvertible: URLRequestConvertible, completion: @escaping (Bool) ->  Void) {
+        AF.request(urlConvertible).response { response in
+            switch response.result {
+                
+            case .success(_):
+                completion(true)
+            case .failure(_):
+                completion(false)
+            }
+        }
+    }
 }
+
 

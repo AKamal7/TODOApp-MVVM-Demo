@@ -46,12 +46,16 @@ class TodoListVC: UIViewController {
     //MARK:- Private Methods
     private func getAllTasks() {
         self.view.showLoader()
-        APIManager.getTask { (error, taskData) in
-            if let error = error {
-                print(error.localizedDescription)
-            } else if let taskData = taskData {
-                self.tasks = taskData
+        APIManager.getTask { (result) in
+            switch result {
+                
+            case .success(let taskData):
+                self.tasks = taskData.data
                 self.tableView.reloadData()
+                
+            case .failure(let error):
+                print(error.localizedDescription)
+                
             }
             self.view.hideLoader()
         }
