@@ -10,8 +10,8 @@
         <!--Sign InVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="SignInVC" id="BYZ-38-t0r" customClass="SignInVC" customModule="TODOApp_MVC_Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" restorationIdentifier="SignInView" id="8bC-Xf-vdC" userLabel="SignInView" customClass="SignInView" customModule="TODOApp_MVC_Demo" customModuleProvider="target">
+                <viewController storyboardIdentifier="SignInVC" id="BYZ-38-t0r" customClass="SignInVC" customModule="TODOApp_MVVM_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="SignInView" id="8bC-Xf-vdC" userLabel="SignInView" customClass="SignInView" customModule="TODOApp_MVVM_Demo" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -70,8 +70,6 @@
                         </connections>
                     </view>
                     <connections>
-                        <outlet property="emailTextField" destination="j7z-6S-VaU" id="9dz-sm-53P"/>
-                        <outlet property="passwordTextField" destination="AcB-Wj-iEG" id="iIY-bL-l00"/>
                         <outlet property="signInView" destination="8bC-Xf-vdC" id="G8F-oY-gZ8"/>
                     </connections>
                 </viewController>
@@ -82,8 +80,8 @@
         <!--Sign UpVC-->
         <scene sceneID="cMv-G5-22U">
             <objects>
-                <viewController storyboardIdentifier="SignUpVC" id="T6n-BO-Yei" customClass="SignUpVC" customModule="TODOApp_MVC_Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" restorationIdentifier="SignUpView" id="Zpo-mT-JwU" customClass="SignUpView" customModule="TODOApp_MVC_Demo" customModuleProvider="target">
+                <viewController storyboardIdentifier="SignUpVC" id="T6n-BO-Yei" customClass="SignUpVC" customModule="TODOApp_MVVM_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" restorationIdentifier="SignUpView" id="Zpo-mT-JwU" customClass="SignUpView" customModule="TODOApp_MVVM_Demo" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -150,10 +148,6 @@
                         </connections>
                     </view>
                     <connections>
-                        <outlet property="ageTextField" destination="jgp-M6-YvE" id="gMD-5j-jeU"/>
-                        <outlet property="emailTextField" destination="syZ-3H-bKR" id="d0c-9n-S1Z"/>
-                        <outlet property="nameTextField" destination="0eb-OA-mCw" id="C0f-eC-z82"/>
-                        <outlet property="passwordTextField" destination="ouE-Ru-eMX" id="dAz-ya-6XC"/>
                         <outlet property="signUpView" destination="Zpo-mT-JwU" id="dsY-sX-yMN"/>
                     </connections>
                 </viewController>
@@ -164,7 +158,7 @@
         <!--Profile-->
         <scene sceneID="175-6E-Tes">
             <objects>
-                <tableViewController storyboardIdentifier="ProfileVC" id="Bz8-j9-E9b" customClass="ProfileVC" customModule="TODOApp_MVC_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ProfileVC" id="Bz8-j9-E9b" customClass="ProfileVC" customModule="TODOApp_MVVM_Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Mld-Tv-ue0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

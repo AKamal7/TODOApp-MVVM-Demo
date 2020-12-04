@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol profilePresenterViewModel {
+protocol profileViewModelProtocol {
     func getUserData()
     func updateUserProfile(with user: User)
     func userLoggedOut()
@@ -18,7 +18,7 @@ protocol profilePresenterViewModel {
     func deselectRow(section: Int, row: Int)
 }
 
-class ProfileVCViewModel: profilePresenterViewModel {
+class ProfileVCViewModel: profileViewModelProtocol {
     
     //MARK:- Properties
     weak var view: profileProtocol!

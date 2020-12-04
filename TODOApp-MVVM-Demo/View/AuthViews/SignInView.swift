@@ -23,14 +23,14 @@ class SignInView: UIView {
     }
     
     func setupTextField(_ textField: UITextField, placeHolder: String, isSecure: Bool) {
-        textField.backgroundColor = .blue
+        textField.backgroundColor = .systemBackground
         textField.placeholder = placeHolder
         textField.font = UIFont(name: emailTextField.font!.fontName, size: 20)
         textField.isSecureTextEntry = isSecure
     }
     
     func setupSignInButton() {
-        signInButton.backgroundColor = .blue
+        signInButton.backgroundColor = .link
         signInButton.setTitle("Sign In", for: .normal)
         signInButton.layer.cornerRadius = signInButton.frame.height / 2
     }

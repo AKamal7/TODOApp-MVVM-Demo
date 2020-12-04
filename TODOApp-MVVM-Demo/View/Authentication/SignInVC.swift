@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AuthNavigationDelegate: class {
+   func showMainState()
+}
+
 protocol SignInProtocol: class {
     func hideLoader()
     func showLoader()
@@ -15,16 +19,14 @@ protocol SignInProtocol: class {
     func showAlert(title: String, message: String, alertStyle: UIAlertController.Style, actionTitles: [String], actionStyles: [UIAlertAction.Style], actions: [((UIAlertAction) -> Void)?]?)
 }
 
-
 class SignInVC: UIViewController {
     
     // MARK:- IBOutlets
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet var signInView: SignInView!
+    @IBOutlet weak var signInView: SignInView!
     
     //MARK:- Properties
-    var presenter: SignInViewModelProtocol!
+    var viewModel: SignInViewModelProtocol!
+    weak var delegate: AuthNavigationDelegate?
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
@@ -39,18 +41,19 @@ class SignInVC: UIViewController {
     // MARK:- IBActions
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         let signUpVC = SignUpVC.create()
+        signUpVC.delegate = delegate
         navigationController?.pushViewController(signUpVC, animated: true)
     }
     
     @IBAction func signInButtonPressed(_ sender: Any) {
-        let user = User(email: emailTextField.text, password: passwordTextField.text)
-        presenter.tryToLogin(with: user)
+        let user = User(email: signInView.emailTextField.text, password: signInView.passwordTextField.text)
+        viewModel.tryToLogin(with: user)
     }
     
     // MARK:- Public Methods
     class func create() -> SignInVC {
         let signInVC: SignInVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signInVC)
-        signInVC.presenter = SignInVCViewModel(view: signInVC)
+        signInVC.viewModel = SignInVCViewModel(view: signInVC)
         return signInVC
     }
 }
@@ -62,11 +65,8 @@ extension SignInVC: SignInProtocol {
      }
      
      func goToMainVC() {
-         let toDoListVC =  TodoListVC.create()
-         let toDoListNav = UINavigationController(rootViewController: toDoListVC)
-         AppDelegate.shared().window?.rootViewController = toDoListNav
+        self.delegate?.showMainState()
      }
-     
      
      func hideLoader() {
          self.view.hideLoader()

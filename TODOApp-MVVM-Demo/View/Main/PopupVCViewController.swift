@@ -22,7 +22,7 @@ class PopupVCViewController: UIViewController {
     
     //MARK:- Properties
     weak var delegate: refreshToDoListDelegate?
-    var presenter: popUpViewModelProtocol!
+    var viewModel: popUpViewModelProtocol!
     //MARK:- IBOutlets
     @IBOutlet weak var descriptionTextField: UITextField!
     
@@ -37,7 +37,7 @@ class PopupVCViewController: UIViewController {
             return
         }
         let task = Task(description: descriptionText)
-        presenter.addTask(with: task)
+        viewModel.addTask(with: task)
     }
     
     @IBAction func cancelButtonPressed(_ sender: UIButton) {
@@ -53,7 +53,7 @@ class PopupVCViewController: UIViewController {
     // MARK:- Public Methods
     class func create() -> PopupVCViewController {
         let popupVC: PopupVCViewController = UIViewController.create(storyboardName: Storyboards.main, identifier: ViewControllers.popupVC)
-        popupVC.presenter = PopUpViewModel(view: popupVC)
+        popupVC.viewModel = PopUpViewModel(view: popupVC)
         return popupVC
     }
 }

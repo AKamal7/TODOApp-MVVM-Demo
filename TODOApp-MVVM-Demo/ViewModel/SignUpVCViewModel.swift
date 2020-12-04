@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SignUpPresenterViewModel {
+protocol SignUpViewModelProtocol {
     func tryToSignUp(with user: User)
 }
 
@@ -66,7 +66,7 @@ class SignUpVCViewModel {
     }
 }
 
-extension SignUpVCViewModel: SignUpPresenterViewModel {
+extension SignUpVCViewModel: SignUpViewModelProtocol {
     
     func tryToSignUp(with user: User) {
         if validateUser(user: user) {

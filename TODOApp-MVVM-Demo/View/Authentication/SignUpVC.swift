@@ -18,19 +18,16 @@ protocol signUpProtocol: class {
 class SignUpVC: UIViewController {
     
     // MARK:- IBOutlets
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    @IBOutlet weak var ageTextField: UITextField!
     @IBOutlet var signUpView: SignUpView!
     
     //MARK:- Properties
-    var presenter: SignUpPresenterViewModel!
+    var viewModel: SignUpViewModelProtocol!
+    weak var delegate: AuthNavigationDelegate?
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        signUpView.setup()
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
@@ -38,16 +35,16 @@ class SignUpVC: UIViewController {
     
     // MARK:- IBActions
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
-        guard let ageString = ageTextField.text else { return }
+        guard let ageString = signUpView.ageTextField.text else { return }
         let age = Int(ageString)
-        let user = User(email: emailTextField.text, password: passwordTextField.text, age: age , name: nameTextField.text)
-        presenter.tryToSignUp(with: user)
+        let user = User(email: signUpView.emailTextField.text, password: signUpView.passwordTextField.text, age: age , name: signUpView.nameTextField.text)
+        viewModel.tryToSignUp(with: user)
         }
     
     // MARK:- Public Methods
     class func create() -> SignUpVC {
         let signUpVC: SignUpVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.signUpVC)
-        signUpVC.presenter = SignUpVCViewModel(view: signUpVC)
+        signUpVC.viewModel = SignUpVCViewModel(view: signUpVC)
         return signUpVC
     }
 }
@@ -59,9 +56,7 @@ extension SignUpVC: signUpProtocol {
     }
      
      func goToMainVC() {
-         let toDoListVC =  TodoListVC.create()
-         let toDoListNav = UINavigationController(rootViewController: toDoListVC)
-         AppDelegate.shared().window?.rootViewController = toDoListNav
+        self.delegate?.showMainState()
      }
      
      func showLoader() {

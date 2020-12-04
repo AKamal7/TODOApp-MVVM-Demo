@@ -21,13 +21,14 @@ class TodoListVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //MARK:- Properties
-    var presenter: ToDoListViewModelProtocol!
+    var viewModel: ToDoListViewModelProtocol!
+    weak var delegate: MainNavigationDelegate?
     
     // MARK:- Lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
         tableViewConfigure()
-        presenter.getTasks()
+        viewModel.getTasks()
     }
     
     //MARK:- IBActions
@@ -39,13 +40,14 @@ class TodoListVC: UIViewController {
     
     @IBAction func profileButtonPressed(_ sender: UIBarButtonItem) {
         let profileVC = ProfileVC.create()
+        profileVC.delegate = delegate
         navigationController?.pushViewController(profileVC, animated: true)
     }
     
     // MARK:- Public Methods
     class func create() -> TodoListVC {
         let todoListVC: TodoListVC = UIViewController.create(storyboardName: Storyboards.main, identifier: ViewControllers.todoListVC)
-        todoListVC.presenter = TodoListVCViewModel(view: todoListVC)
+        todoListVC.viewModel = TodoListVCViewModel(view: todoListVC)
         return todoListVC
     }
     
@@ -60,7 +62,7 @@ class TodoListVC: UIViewController {
 
 extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return presenter.taskCount()
+        return viewModel.taskCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -68,7 +70,7 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         cell.delegate = self
-        presenter.configure(cell: cell, for: indexPath.row)
+        viewModel.configure(cell: cell, for: indexPath.row)
         return cell
         
     }
@@ -76,14 +78,14 @@ extension TodoListVC: UITableViewDelegate, UITableViewDataSource {
 
 extension TodoListVC: refreshToDoListDelegate {
     func refreshData() {
-        presenter.getTasks()
+        viewModel.getTasks()
     }
 }
 
 extension TodoListVC: deleteTaskDelegate {
     func deleteTask(cell: UITableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {return}
-        presenter.deleteTaskAlert(index: indexPath.row)
+        viewModel.deleteTaskAlert(index: indexPath.row)
     }
     
 }

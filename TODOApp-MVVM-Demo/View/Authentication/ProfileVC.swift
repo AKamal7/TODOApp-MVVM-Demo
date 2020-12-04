@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol MainNavigationDelegate: class {
+   func showAuthState()
+}
+
 protocol profileProtocol: class {
     func showLoader()
     func hideLoader()
@@ -22,7 +26,7 @@ protocol profileProtocol: class {
 
 class ProfileVC: UITableViewController {
     
-    var presenter: profilePresenterViewModel!
+    var viewModel: profileViewModelProtocol!
     // MARK:- IBOutlets
     @IBOutlet weak var profilePicImageView: UIImageView!
     @IBOutlet weak var profileLabel: UILabel!
@@ -32,11 +36,11 @@ class ProfileVC: UITableViewController {
     
     //MARK:- Properties
     let imagePicker = UIImagePickerController()
-    
+    weak var delegate: MainNavigationDelegate?
     //MARK:- LifeCycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter.getUserData()
+        viewModel.getUserData()
     }
     
     //MARK:- IBActions
@@ -49,7 +53,7 @@ class ProfileVC: UITableViewController {
     // MARK:- Public Methods
     class func create() -> ProfileVC {
         let profileVC: ProfileVC = UIViewController.create(storyboardName: Storyboards.authentication, identifier: ViewControllers.profileVC)
-        profileVC.presenter = ProfileVCViewModel(view: profileVC)
+        profileVC.viewModel = ProfileVCViewModel(view: profileVC)
         return profileVC
     }
     
@@ -61,7 +65,7 @@ class ProfileVC: UITableViewController {
     
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.deselectRow(section: indexPath.section, row: indexPath.row)
+        viewModel.deselectRow(section: indexPath.section, row: indexPath.row)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -70,7 +74,7 @@ extension ProfileVC: UINavigationControllerDelegate, UIImagePickerControllerDele
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let chosenImage = info[.editedImage] as? UIImage, let imageData = chosenImage.jpegData(compressionQuality: 0.8) {
-            presenter.uploadPic(image: imageData )
+            viewModel.uploadPic(image: imageData )
         }
         dismiss(animated: true, completion: nil)
     }
@@ -79,7 +83,7 @@ extension ProfileVC: UINavigationControllerDelegate, UIImagePickerControllerDele
 extension ProfileVC: profileProtocol {
     
     func userData(userData: UserData) {
-        presenter.getImage(id: userData.id)
+        viewModel.getImage(id: userData.id)
         self.nameLabel.text = userData.name
         self.emailLabel.text = userData.email
         self.ageLabel.text = String(userData.age)
@@ -108,9 +112,7 @@ extension ProfileVC: profileProtocol {
     }
     
     func goToAuthState() {
-        let signInVC = SignInVC.create()
-        let signInNav = UINavigationController(rootViewController: signInVC)
-        AppDelegate.shared().window?.rootViewController = signInNav
+        self.delegate?.showAuthState()
     }
     
     func showAlert(title: String, message: String, alertStyle: UIAlertController.Style, actionTitles: [String], actionStyles: [UIAlertAction.Style], actions: [((UIAlertAction) -> Void)?]?) {
@@ -120,7 +122,7 @@ extension ProfileVC: profileProtocol {
     private func logOutAlert(title: String, message: String, preferedStyle: UIAlertController.Style, actions: [UIAlertAction]) {
         let alert = UIAlertController(title: "Log Out", message: "are you sure u wanna Log Out :( ?", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (alert) in
-            self.presenter.userLoggedOut()
+            self.viewModel.userLoggedOut()
         }))
         alert.addAction(UIAlertAction(title: "NO", style: .cancel, handler: nil))
         present(alert, animated: false)
@@ -143,7 +145,7 @@ extension ProfileVC: profileProtocol {
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned alert] _ in
             guard let age = Int(alert.textFields![2].text ?? "") else {return}
             let user = User(email: alert.textFields![0].text,age: age, name: alert.textFields![1].text)
-            self.presenter.updateUserProfile(with: user)
+            self.viewModel.updateUserProfile(with: user)
         }
         
         alert.addAction(submitAction)
